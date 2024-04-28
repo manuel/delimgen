@@ -20,17 +20,17 @@ class Resumption
     get_resumption_handler() { return this.handler; }
 }
 
-export function* push_prompt(gen, prompt)
+export function* $push_prompt(gen, prompt)
 {
-    return yield* push_action(gen, () => gen.next(), prompt);
+    return yield* $push_action(gen, () => gen.next(), prompt);
 }
 
-export function* push_delim_subcont(gen, resumption_handler, prompt)
+export function* $push_delim_subcont(gen, resumption_handler, prompt)
 {
-    return yield* push_action(gen, () => gen.next(new Resumption(resumption_handler)), prompt);
+    return yield* $push_action(gen, () => gen.next(new Resumption(resumption_handler)), prompt);
 }
 
-function* push_action(gen, action, prompt = DEFAULT_PROMPT)
+function* $push_action(gen, action, prompt = DEFAULT_PROMPT)
 {
     while (true) {
         const res = action();
@@ -47,7 +47,7 @@ function* push_action(gen, action, prompt = DEFAULT_PROMPT)
    }
 }
 
-export function* take_subcont(suspension_handler, prompt)
+export function* $take_subcont(suspension_handler, prompt)
 {
     const resumption = yield new Suspension(suspension_handler, prompt);
     const resumption_handler = resumption.get_resumption_handler();
