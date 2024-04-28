@@ -21,28 +21,30 @@ class Resumption
 
 function* push_prompt(gen)
 {
-    const res = gen.next();
-    if (res.done) {
-        return res.value;
-    } else {
-        return yield* res.value.get_suspension_handler()(gen);
-    }
+    return yield* push_action(gen, () => gen.next());
 }
 
 function* push_delim_subcont(gen, resumption_handler)
 {
-    const res = gen.next(new Resumption(resumption_handler));
+    return yield* push_action(gen, () => gen.next(new Resumption(resumption_handler)))
+}
+
+function* push_action(gen, action)
+{
+    const res = action();
     if (res.done) {
         return res.value;
     } else {
-        return yield* res.value.get_suspension_handler()(gen);
+        const suspension_handler = res.value.get_suspension_handler();
+        return yield* suspension_handler(gen);
     }
 }
 
 function* take_subcont(suspension_handler)
 {
     const resumption = yield new Suspension(suspension_handler);
-    return yield* resumption.get_resumption_handler()();
+    const resumption_handler = resumption.get_resumption_handler();
+    return yield* resumption_handler();
 }
 
 class Outline_mode
