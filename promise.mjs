@@ -24,7 +24,7 @@ export function* await_promise(promise)
 
 /*
  * Turns a promise-returning asynchronous function into a blocking
- * generator (see sleep.mjs for an example).
+ * generator function (see sleep.mjs for an example).
  */
 export function sync(async_function)
 {

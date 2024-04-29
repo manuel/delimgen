@@ -56,6 +56,9 @@ export function* resume(generator, resumption_handler)
 
 /*
  * Internal function that's the basis for running or resuming a generator.
+ *
+ * (It's called push_action because it basically does the job of the
+ * push_prompt and push_delim_subcont functions of caml-shift.)
  */
 function* push_action(generator, action)
 {
