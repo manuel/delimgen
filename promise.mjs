@@ -12,7 +12,7 @@ import { suspend, resume } from "./index.mjs";
  * resume and throw its error.
  *
  * Returns a promise so generator-based code can readily be plugged
- * into test frameworks that work with promises.
+ * into e.g. test frameworks that work with promises.
  */
 export function* await_promise(promise)
 {

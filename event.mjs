@@ -6,15 +6,18 @@
 import { suspend, resume } from "./index.mjs";
 
 /*
- * You create a single event manager for your app.
+ * There should be a single event manager and a single main generator
+ * reading events from it in an app.
  *
  * Events arriving from event handlers (e.g. window.onclick) should be
  * piped into the inject_event() method.
  *
- * A generator can block on events by calling get_next_event().
+ * The main generator can block on events by calling get_next_event().
  *
  * This currently doesn't do any queueing - if an event arrives when
- * no generator is waiting for an event, the event is simply dropped.
+ * the main generator isn't waiting for an event (which can happen
+ * when it is doing another async task, like a network request), the
+ * event is simply dropped.
  */
 export class EventManager
 {
@@ -25,7 +28,7 @@ export class EventManager
          * on an event.
          *
          * When an event arrives, we resume the generator with the
-         * event as result of the call to get_next_event().
+         * event as the result of the call to get_next_event().
          */
         this.saved_generator = null;
     }

@@ -2,11 +2,11 @@
 import { run } from "../index.mjs";
 import { sleep } from "../sleep.mjs";
 
-function* sleeper(i)
+function* sleeper(id)
 {
     while (true)
     {
-        document.write("hello from " + i + " ");
+        document.write("hello from " + id + " ");
         yield* sleep(1000);
     }
 }
@@ -20,5 +20,5 @@ function* main()
     yield *run(sleeper(3));
 }
 
-window.onload = () => run(main()).next()
+window.onload = () => run(main()).next();
 </script></head></html>
