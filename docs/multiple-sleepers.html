@@ -1,0 +1,24 @@
+<html><head><script type="module">
+import { run } from "../index.mjs";
+import { sleep } from "../sleep.mjs";
+
+function* sleeper(i)
+{
+    while (true)
+    {
+        document.write("hello from " + i);
+        yield* sleep(1000);
+    }
+}
+
+function* main()
+{
+    yield *run(sleeper(1));
+    yield *sleep(250);
+    yield *run(sleeper(2));
+    yield *sleep(250);
+    yield *run(sleeper(3));
+}
+
+window.onload = () => run(main()).next()
+</script></head></html>
