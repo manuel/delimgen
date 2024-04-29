@@ -79,7 +79,7 @@ export class EventManager
      * This method gets called when more than one generator attempts
      * to read events.  You can override it.
      *
-     * This indicates a bug and should always throw.
+     * This indicates a bug in the application and should always throw.
      */
     on_concurrent_get_next_event()
     {
