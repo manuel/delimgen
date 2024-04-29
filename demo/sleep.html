@@ -1,0 +1,15 @@
+<html><head><script type="module">
+import { run } from "../index.mjs";
+import { sleep } from "../sleep.mjs";
+
+function* my_generator()
+{
+    while (true)
+    {
+        document.write("hello");
+        yield* sleep(500);
+    }
+}
+
+window.onload = () => run(my_generator()).next()
+</script></head></html>

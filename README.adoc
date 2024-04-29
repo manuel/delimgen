@@ -1,11 +1,22 @@
 # Pretty Good Generators, or, Minimal Delimited Control for JS
 
-Async APIs are the bane of my existence.  I can't work with them.  I
-refuse to work with them.  I _loathe_ them.
+## Overview
 
-I've even created a series of Lisp interpreters to deal with the
-problem (here's link:https://github.com/lispx/lispx[the latest], it's
-quite OK, check it out).
+This library implements a very thin layer over core ES6 generators to
+make their API look like a delimited control API, which is IMO easier
+to use and more intuitive.
+
+Check out the demo and the code.
+
+## Introduction
+
+JavaScript's async APIs are the bane of my existence.  I can't work
+with them.  I refuse to work with them.  I _loathe_ them.
+
+I've even created a series of increasingly elaborate Lisp interpreters
+to deal with the problem (here's
+link:https://github.com/lispx/lispx[the latest], it's quite OK, check
+it out).
 
 But recently I finally understood ES6 generators well enough to
 realize that with them, you can already work well with async APIs.
@@ -37,17 +48,31 @@ Likewise, when you resume a delimited continuation, you can say
 point where I originally suspended, call this here function".
 
 Luckily, this API can be implemented on top of JS generators in
-link:index.mjs[50 lines or so].
+link:index.mjs[50 lines or so].  This is what this library is about.
 
-## API overview
+## API examples
+
+### Simple sleeping loop
+
+Here's a simple generator that writes something to the document and
+then sleeps.
 
 [source,javascript]
----
+...
+import { run } from "../index.mjs";
+import { sleep } from "../sleep.mjs";
+
 function* my_generator()
 {
-
+    while (true)
+    {
+        document.write("hello");
+        yield* sleep(500);
+    }
 }
----
+
+window.onload = () => run(my_generator()).next();
+...
 
 ## Notes
 
