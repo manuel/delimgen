@@ -7,9 +7,9 @@ import { suspend, resume } from "./index.mjs";
 /*
  * Suspends the current generator and waits for the promise to settle.
  *
- * If the promise resolves, resume the generator and return its result
- * at the point where the generator was suspended.  If it rejects,
- * resume and throw its error.
+ * If the promise resolves, resume the generator and return the
+ * promise's result at the point where the generator was suspended.
+ * If it rejects, resume and throw the promise's error.
  *
  * Returns a promise so generator-based code can readily be plugged
  * into e.g. test frameworks that work with promises.
