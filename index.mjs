@@ -7,8 +7,8 @@
  * generator.
  *
  * It contains a suspension handler - a generator function that will
- * be called with the suspended generator as its argument at the point
- * where the generator was originally run.
+ * be called with the suspended generator as its single argument at
+ * the point where the generator was originally run.
  */
 class Suspension
 {
@@ -37,7 +37,7 @@ class Resumption
 }
 
 /*
- * API entry point to run a generator that can use suspend() and resume().
+ * Run a generator that can use suspend() and resume().
  */
 export function* run(generator)
 {
@@ -46,7 +46,10 @@ export function* run(generator)
 }
 
 /*
- * API entry point to resume a suspended generator with a resumption handler.
+ * Resume a suspended generator with a resumption handler.
+ *
+ * The resumption handler will be called (without arguments) at the
+ * point where the generator was previously suspended.
  */
 export function* resume(generator, resumption_handler)
 {
@@ -83,13 +86,18 @@ function* push_action(generator, action)
 }
 
 /*
- * API entry point to suspend a generator with a suspension handler.
+ * Suspend the currently running generator with a suspension handler.
+ *
+ * The suspension handler will be called at the point where the
+ * generator was originally run, and will receive the generator as its
+ * single argument.
  */
 export function* suspend(suspension_handler)
 {
     /*
-     * Yield a Suspension.  Once we receive the corresponding
-     * Resumption, call the resumption handler.
+     * Yield a Suspension with the given suspension handler.  Once we
+     * receive the corresponding Resumption, call the resumption
+     * handler.
      */
     const resumption = yield new Suspension(suspension_handler);
     const resumption_handler = resumption.get_resumption_handler();
