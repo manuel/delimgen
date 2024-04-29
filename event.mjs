@@ -42,6 +42,9 @@ export class Event_manager
             if (self.saved_generator === null) {
                 self.saved_generator = generator;
             } else {
+                /*
+                 * A generator is already waiting for an event, this is a bug.
+                 */
                 self.on_concurrent_get_next_event();
             }
         });
@@ -57,6 +60,9 @@ export class Event_manager
             this.saved_generator = null;
             yield* resume(generator, function* () { return event; });
         } else {
+            /*
+             * No generator is waiting for an event, drop it.
+             */
             this.on_dropped_event(event);
         }
     }

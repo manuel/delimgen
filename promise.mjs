@@ -10,6 +10,9 @@ import { suspend, resume } from "./index.mjs";
  * If the promise resolves, resume and return its result at the point
  * where the generator was suspended.  If it rejects, resume and throw
  * its error.
+ *
+ * Returns a promise so generator-based code can readily be plugged
+ * into test frameworks that work with promises.
  */
 export function* await_promise(promise)
 {
@@ -20,8 +23,8 @@ export function* await_promise(promise)
 }
 
 /*
- * Turns a promise-returning asynchronous function into a generator
- * (see sleep.mjs).
+ * Turns a promise-returning asynchronous function into a blocking
+ * generator (see sleep.mjs for an example).
  */
 export function sync(async_function)
 {

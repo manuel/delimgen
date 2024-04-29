@@ -1,6 +1,6 @@
-import { run, suspend, resume } from "./index.mjs";
-import { sleep } from "./sleep.mjs";
-import { Event_manager } from "./event.mjs";
+import { run, suspend, resume } from "../index.mjs";
+import { sleep } from "../sleep.mjs";
+import { Event_manager } from "../event.mjs";
 
 function* sleeper(id)
 {
