@@ -43,7 +43,9 @@ export class EventManager
                 self.saved_generator = generator;
             } else {
                 /*
-                 * A generator is already waiting for an event, this is a bug.
+                 * A generator is already waiting for an event.  This
+                 * is a bug in the application - only one generator
+                 * should be reading events.
                  */
                 self.on_concurrent_get_next_event();
             }

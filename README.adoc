@@ -18,12 +18,13 @@ to deal with the problem (here's
 link:https://github.com/lispx/lispx[the latest], it's quite OK, check
 it out).
 
-But recently I finally understood ES6 generators well enough to
-realize that with them, you can already work well with async APIs.
+But recently, I finally came to the point where I understood ES6
+generators well enough to realize that with them, you can already work
+well with async APIs.
 
-(Generators have the cost of a small, constant syntactic overhead (you
+Generators have the cost of a small, constant syntactic overhead (you
 have to use `function*` and `yield*` everywhere), but this is vastly
-preferable to the _infinite_ horrors of async APIs.)
+preferable to the _infinite_ horrors of async APIs.
 
 ## But the plain generators interface isn't so useful - Delimited continuations to the rescue!
 
@@ -84,7 +85,7 @@ multiply-resumable continuations yet).
 Multiple prompts could be added quite easily I think, but I haven't
 really needed those either, yet.
 
-The API functions `run`, `suspend`, and `resume` correspond roughly to
+The API functions `run`, `suspend`, and `resume` roughly correspond to
 `push_prompt`, `take_subcont`, and `push_delim_subcont`, respectively,
 from Oleg's
 link:https://okmij.org/ftp/continuations/implementations.html[caml-shift]
