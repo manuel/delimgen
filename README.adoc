@@ -62,7 +62,7 @@ then sleeps.
 import { run } from "../index.mjs";
 import { sleep } from "../sleep.mjs";
 
-function* my_generator()
+function* sleeper()
 {
     while (true)
     {
@@ -71,7 +71,7 @@ function* my_generator()
     }
 }
 
-window.onload = () => run(my_generator()).next();
+window.onload = () => run(sleeper()).next();
 ...
 
 ## Notes
