@@ -13,6 +13,6 @@ function sleep_async(milliseconds)
 }
 
 /*
- * Generator that sleeps for milliseconds.
+ * Blocking generator that sleeps for milliseconds.
  */
 export const sleep = sync(sleep_async);

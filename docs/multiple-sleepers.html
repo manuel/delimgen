@@ -12,11 +12,10 @@ function* sleeper(id)
 
 function* main()
 {
-    yield* run(sleeper(1));
-    yield* sleep(250);
-    yield* run(sleeper(2));
-    yield* sleep(250);
-    yield* run(sleeper(3));
+    for (let i = 1; i <= 5; i++) {
+        yield* run(sleeper(i));
+        yield* sleep(200);
+    }
 }
 
 window.onload = () => run(main()).next();

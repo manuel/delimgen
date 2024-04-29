@@ -7,7 +7,8 @@
  * generator.
  *
  * It contains a suspension handler - a generator function that will
- * be called with the suspended generator as its argument.
+ * be called with the suspended generator as its argument at the point
+ * where the generator was originally run.
  */
 class Suspension
 {
@@ -54,7 +55,7 @@ export function* resume(generator, resumption_handler)
 }
 
 /*
- * Internal function that's the basis for running and resuming a generator.
+ * Internal function that's the basis for running or resuming a generator.
  */
 function* push_action(generator, action)
 {
