@@ -4,8 +4,7 @@ import { sleep } from "../sleep.mjs";
 
 function* sleeper()
 {
-    while (true)
-    {
+    while (true) {
         document.write("hello ");
         yield* sleep(500);
     }
