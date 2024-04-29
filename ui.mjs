@@ -1,58 +1,33 @@
-import { $push_prompt, $take_subcont, $push_delim_subcont } from "./chicane.mjs";
+import { run, suspend, resume } from "./index.mjs";
+import { sleep } from "./sleep.mjs";
+import { Event_manager } from "./event.mjs";
 
-class UI
+function* sleeper(id)
 {
-    *$run()
+    while (true)
     {
-        while (true) {
-            const evt = yield* $get_next_event();
-            console.log(evt);
-            yield* $sleep(100);
-            console.log("slept 1");
-            yield* $sleep(100);
-            console.log("slept 2");
-        }
+        console.log(id + " going for a nap");
+        yield* sleep(2000);
     }
 }
 
-window.onload = () => $push_prompt(new UI().$run()).next();
+const event_manager = new Event_manager();
 
-window.onclick = (evt) => $inject_event(evt).next();
-
-let saved_coroutine = null;
-
-function* $get_next_event()
+function* gui_loop()
 {
-    return yield* $take_subcont(function* (gen) { saved_coroutine = gen; });
-}
-
-function* $inject_event(evt)
-{
-    if (saved_coroutine !== null) {
-        const gen = saved_coroutine;
-        saved_coroutine = null;
-        yield* $push_delim_subcont(gen, function* () { return evt; });
-    } else {
-        console.log("dropped event", evt);
+    yield* run(sleeper(1));
+    yield* run(sleeper(2));
+    yield* run(sleeper(3));
+    while (true) {
+        const event = yield* event_manager.get_next_event();
+        console.log(event);
+        yield* sleep(100);
+        console.log("slept 1");
+        yield* sleep(100);
+        console.log("slept 2");
     }
 }
 
-function* $await_promise(promise)
-{
-    return yield* $take_subcont(function* (gen) {
-        promise.then((value) => $push_delim_subcont(gen, function*(){ return value; }).next(),
-                     (error) => $push_delim_subcont(gen, function*(){ throw error; }).next());
-    });
-}
+window.onload = () => run(gui_loop()).next();
 
-function sync(fun)
-{
-    return function*(...args) { return yield* $await_promise(fun(...args)); }
-}
-
-function sleep_async(ms)
-{
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-const $sleep = sync(sleep_async);
+window.onclick = (event) => event_manager.inject_event(event).next();
