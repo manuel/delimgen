@@ -57,6 +57,9 @@ export class EventManager
 
     /*
      * Add an event coming from an external event handler.
+     *
+     * Wake up the waiting generator and return the event from its
+     * call to get_next_event().
      */
     *inject_event(event)
     {
