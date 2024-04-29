@@ -16,7 +16,7 @@ import { suspend, resume } from "./index.mjs";
  * This currently doesn't do any queueing - if an event arrives when
  * no generator is waiting for an event, the event is simply dropped.
  */
-export class Event_manager
+export class EventManager
 {
     constructor()
     {
