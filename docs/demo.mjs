@@ -2,7 +2,7 @@ import { run, suspend, resume } from "../index.mjs";
 import { sleep } from "../sleep.mjs";
 import { EventManager } from "../event.mjs";
 
-function* ball(x, y)
+function* ball(x, y, xdelta, ydelta)
 {
     while (true)
     {
@@ -21,7 +21,7 @@ function* main_loop()
     // Wait for click events, spawn a new ball on each click
     while (true) {
         const event = yield* event_manager.get_next_event();
-        console.log(event.pageX);
+        yield* run(ball, event.pageX, event.pageY);
     }
 }
 

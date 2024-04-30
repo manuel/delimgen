@@ -13,7 +13,7 @@ implementing a blocking event loop become straightforward.
 With a small constant overhead (having to use `function*`, using
 `yield*` for every blocking call, and using `next()` to kickstart
 generators from an ordinary, non-generator function), one can write
-asynchronous programs in a quasi-direct style.
+asynchronous JS programs in a quasi-direct style.
 
 ## Notes
 
