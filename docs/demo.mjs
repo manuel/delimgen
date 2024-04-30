@@ -1,18 +1,17 @@
 import { run, suspend, resume } from "../index.mjs";
 import { sleep } from "../sleep.mjs";
-import { EventManager } from "../event.mjs";
+import { get_next_event, inject_event } from "../event.mjs";
 
-function* ball(x, y, xdelta, ydelta)
+function* ball(x, y)
 {
     while (true)
     {
+        console.log(x, y);
         yield* sleep(2000);
     }
 }
 
-const event_manager = new EventManager();
-
-function* main_loop()
+function* main()
 {
     // Spawn some pre-existing balls
     yield* run(ball(100, 200));
@@ -20,11 +19,11 @@ function* main_loop()
     yield* run(ball(200, 800));
     // Wait for click events, spawn a new ball on each click
     while (true) {
-        const event = yield* event_manager.get_next_event();
-        yield* run(ball, event.pageX, event.pageY);
+        const event = yield* get_next_event();
+        yield* run(ball(event.pageX, event.pageY));
     }
 }
 
-window.onload = () => run(main_loop()).next();
+window.onload = () => run(main()).next();
 
-window.onclick = (event) => event_manager.inject_event(event).next();
+window.onclick = (event) => inject_event(event).next();
