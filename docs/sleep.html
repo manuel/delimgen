@@ -1,4 +1,19 @@
 <html><head><script type="module">
+/*
+ * The most simple example: a single generator that runs an infinite loop
+ * that prints something and then sleeps.
+ *
+ * It demonstrates the core features of the API:
+ *
+ * - All code is written as `function*` generator functions.
+ *
+ * - All calls to generators are performed with `yield*`.
+ *
+ * - All generators are wrapped in a call to the `run` API function.
+ *
+ * - To kickstart a generator from a non-generator function like
+ *   `window.onload`, use `next`.
+ */
 import { run } from "../index.mjs";
 import { sleep } from "../sleep.mjs";
 

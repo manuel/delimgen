@@ -1,4 +1,8 @@
 <html><head><script type="module">
+/*
+ * This example spawns multiple independent generators, each of which
+ * repeatedly prints something and then sleeps.
+ */
 import { run } from "../index.mjs";
 import { sleep } from "../sleep.mjs";
 
@@ -12,6 +16,9 @@ function* sleeper(id)
 
 function* main()
 {
+    /*
+     * Spawn five generators, sleeping a little in between.
+     */
     for (let i = 1; i <= 5; i++) {
         yield* run(sleeper(i));
         yield* sleep(200);

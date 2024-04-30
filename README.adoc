@@ -1,84 +1,24 @@
-# Pretty Good Generators, or, Minimal Delimited Control for JS
+# Delimited Generators - Minimal Delimited Control for JS
 
 ## Overview
 
-This library implements a very thin layer over core ES6 generators to
-make their API look like a delimited control API, which is IMO easier
-to use and more intuitive.
+This library implements delimited control operators as a very thin (50
+LOC) layer over plain ES6 generators.
 
-Check out the demo and the code.
+It doesn't add any expressive power over plain generators, but I think
+it offers a more intuitive API.  Specifically, tasks like waiting for
+a promise to settle, spawning a new independent generator, or
+implementing a blocking event loop become straightforward.
 
-## Introduction
-
-JavaScript's async APIs are the bane of my existence.  I can't work
-with them.  I refuse to work with them.  I _loathe_ them.
-
-I've even created a series of increasingly elaborate Lisp interpreters
-to deal with the problem (here's
-link:https://github.com/lispx/lispx[the latest], it's quite OK, check
-it out).
-
-But recently, I finally came to the point where I understood ES6
-generators well enough to realize that with them, you can already work
-well with async APIs.
-
-Generators have the cost of a small, constant syntactic overhead (you
-have to use `function*` and `yield*` everywhere), but this is vastly
-preferable to the _infinite_ horrors of async APIs.
-
-## But the plain generators interface isn't so useful - Delimited continuations to the rescue!
-
-With a JS generator, you can yield, but you don't have any control
-over where you're yielding to or what happens there.
-
-And you can resume back into a generator with a value or an exception,
-but you don't have any control over what happens then.
-
-Thankfully, in my study of how to deal with async APIs, I
-link:http://axisofeval.blogspot.com/2011/08/notes-on-delimited-continuations.html[came across delimited continuations].
-
-Their API is initially hard to understand, but once you grok it, it's
-very natural, and seems to me like the Right Thing.
-
-When you suspend a delimited continuation, you remain in control: you
-can say, "suspend my continuation, and then call this here function with
-the suspended continuation as argument".
-
-Likewise, when you resume a delimited continuation, you can say
-"resume into this previously suspended continuation, and then at the
-point where I originally suspended, call this here function".
-
-Luckily, this API can be implemented on top of JS generators in
-link:index.mjs[50 lines or so].  This is what this library is about.
-
-## API examples
-
-### Simple sleeping loop
-
-Here's a simple generator that writes something to the document and
-then sleeps.
-
-[source,javascript]
-...
-import { run } from "../index.mjs";
-import { sleep } from "../sleep.mjs";
-
-function* sleeper()
-{
-    while (true)
-    {
-        document.write("hello");
-        yield* sleep(500);
-    }
-}
-
-window.onload = () => run(sleeper()).next();
-...
+With a small constant overhead (having to use `function*`, using
+`yield*` for every blocking call, and using `next()` to kickstart
+generators from an ordinary, non-generator function), one can write
+asynchronous programs in a quasi-direct style.
 
 ## Notes
 
 In terms of delimited control, this library implements single-prompt
-continuations, that can only be resumed once (this is a core
+continuations that can only be resumed once (this is a fundamental
 limitation of generators, but personally I haven't needed
 multiply-resumable continuations yet).
 
