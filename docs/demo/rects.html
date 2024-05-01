@@ -4,7 +4,7 @@ import { sleep } from "../sleep.mjs";
 import { get_next_event, inject_event } from "../event.mjs";
 
 /*
- * This demonstrates running multiple independent generators running
+ * This demonstrates running multiple independent generator
  * sleep-loops, and a main generator blocking for events.
  */
 
@@ -17,7 +17,9 @@ function* main()
     yield* run(rect(200, 300));
     yield* run(rect(300, 400));
     /*
-     * Wait for click events, spawn a new rect on each click.
+     * Main loop.
+     *
+     * Block on click events, spawn a new rect on each click.
      */
     while (true) {
         const event = yield* get_next_event();
@@ -28,7 +30,8 @@ function* main()
 window.onload = () => run(main()).next();
 
 /*
- * Pipe click events into event loop.
+ * Pipe click events into event loop.  This wakes up the blocking call
+ * to get_next_event().
  */
 window.onclick = (event) => inject_event(event).next();
 
@@ -43,8 +46,8 @@ function* rect(x, y)
     rect.style.left = x + "px";
     rect.style.top = y + "px";
     document.body.appendChild(rect);
-    const xdelta = rand(0, 5);
-    const ydelta = rand(0, 5);
+    const xdelta = rand(0, 5) - rand(0, 10);
+    const ydelta = rand(0, 5) - rand(0, 10);
     while (true)
     {
         x += xdelta;
