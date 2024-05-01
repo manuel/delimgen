@@ -15,6 +15,41 @@ With a small constant overhead (having to use `function*`, using
 generators from an ordinary, non-generator function), one can write
 asynchronous JS programs in a quasi-direct style.
 
+## Examples
+
+### link:https://manuel.github.io/delimgen/demo/single-sleeper.html[Single sleeper]
+
+A single generator that runs in an infinite loop.  Each time through
+the loop it prints something and then sleeps.  Demonstrates the core
+API.
+
+### link:https://manuel.github.io/delimgen/demo/multiple-sleepers.html[Multiple sleepers]
+
+Demonstrates spawning multiple independent generators with their own loops.
+
+### link:https://manuel.github.io/delimgen/demo/balls.html[Balls]
+
+Demonstrates a blocking main event loop, and multiple independent generators.
+
+## API
+
+### `run(generator)`
+
+Spawns a new generator that can use `suspend` and `resume`.
+
+### `suspend(suspension_handler)`
+
+Suspends the currently running generator, and calls the suspension
+handler in the place where the generator was originally run.  The
+suspension handler receives the suspended generator as its single
+argument.
+
+### `resume(generator, resumption_handler)`
+
+Resumes a suspended generator, and calls the resumption handler
+without arguments in the place where the generator was previously
+suspended.
+
 ## Notes
 
 In terms of delimited control, this library implements single-prompt
