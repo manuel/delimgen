@@ -9,7 +9,7 @@ import { sleep } from "../sleep.mjs";
 function* sleeper(id)
 {
     while (true) {
-        document.body.appendChild(document.createTextNode("hello from " + id + " "));
+        document.getElementById("output").appendChild(document.createTextNode("hello from " + id + " "));
         yield* sleep(1000);
     }
 }
@@ -27,5 +27,8 @@ function* main()
 
 window.onload = () => run(main()).next();
 </script></head>
-<body><b>This page has a multiple independent generators running infinite loops.  View source to see how it works.</b></body>
+<body>
+<b>This page has a multiple independent generators running infinite loops.  View source to see how it works.</b>
+<div id="output"></div>
+</body>
 </html>
