@@ -25,7 +25,7 @@ API.
 
 ### link:https://manuel.github.io/delimgen/demo/multiple-sleepers.html[Multiple sleepers]
 
-Demonstrates spawning multiple independent generators with their own loops.
+Demonstrates spawning multiple generators with their own independent loops.
 
 ### link:https://manuel.github.io/delimgen/demo/balls.html[Balls]
 
