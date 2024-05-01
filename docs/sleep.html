@@ -20,10 +20,12 @@ import { sleep } from "../sleep.mjs";
 function* sleeper()
 {
     while (true) {
-        document.write("hello ");
+        document.body.appendChild(document.createTextNode("hello "));
         yield* sleep(500);
     }
 }
 
 window.onload = () => run(sleeper()).next();
-</script></head></html>
+</script></head>
+<body><b>This page has a single generator running an infinite loop.  View source to see how it works.</b></body>
+</html>
