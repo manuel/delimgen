@@ -46,8 +46,8 @@ function* ball(x, y)
     ball.style.left = x + "px";
     ball.style.top = y + "px";
     document.body.appendChild(ball);
-    const xdelta = rand(0, 5) - rand(0, 10);
-    const ydelta = rand(0, 5) - rand(0, 10);
+    const xdelta = -5 + rand(0, 10);
+    const ydelta = -5 + rand(0, 10);
     while (true)
     {
         x += xdelta;
