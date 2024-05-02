@@ -17,12 +17,18 @@ import { suspend, resume } from "./index.mjs";
  * simply dropped.
  */
 
+/*
+ * This variable holds the generator currently blocking on an event,
+ * or null if no generator is blocking.
+ */
 let waiting_generator = null;
 
 /*
  * Suspend the calling generator until an event arrives.
  *
- * The generator gets saved in the waiting_generator property.
+ * The generator gets saved in the waiting_generator variable.
+ *
+ * If another generator is already waiting for an event, throw an error.
  */
 export function* get_next_event()
 {
@@ -40,6 +46,8 @@ export function* get_next_event()
  *
  * Wake up the waiting generator and return the event from its
  * call to get_next_event().
+ *
+ * If no generator is waiting for an event, drop it and print a warning.
  */
 export function *inject_event(event)
 {
