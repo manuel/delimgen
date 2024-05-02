@@ -1,66 +1,50 @@
 <html><head><script type="module">
-import { run, suspend, resume } from "../index.mjs";
-import { sleep } from "../sleep.mjs";
-import { get_next_event, inject_event } from "../event.mjs";
-
-/*
- * This demonstrates running multiple independent generator loops, and
- * a main generator blocking for events.
- */
-
-function* main()
-{
-    /*
-     * Spawn some pre-existing balls.
-     */
-    yield* run(ball(100, 200));
-    yield* run(ball(200, 300));
-    yield* run(ball(300, 400));
-    /*
-     * Main loop.
-     *
-     * Block on click events, spawn a new ball on each click.
-     */
-    while (true) {
-        const event = yield* get_next_event();
-        yield* run(ball(event.pageX, event.pageY));
-    }
+async function main() {
+  /*
+   * Spawn some pre-existing balls.
+   */
+  ball(100, 200);
+  ball(200, 300);
+  ball(300, 400);
+  /*
+   * Main loop.
+   *
+   * Block on click events, spawn a new ball on each click.
+   */
+  while (true) {
+    const event = await new Promise((resolve) =>
+      document.addEventListener("click", resolve, { once: true }),
+    );
+    ball(event.pageX, event.pageY);
+  }
 }
 
-window.onload = () => run(main()).next();
+window.onload = () => main();
 
-/*
- * Pipe click events into event loop.  This wakes up the blocking call
- * to get_next_event().
- */
-window.onclick = (event) => inject_event(event).next();
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-/*
- * Generator that displays a ball, and then runs in an infinite
- * sleep-loop that moves the ball a tiny bit on each step.
- */
-function* ball(x, y)
-{
-    const ball = document.createElement("div");
-    ball.classList.add("ball");
+async function ball(x, y) {
+  const ball = document.createElement("div");
+  ball.classList.add("ball");
+  ball.style.left = x + "px";
+  ball.style.top = y + "px";
+  document.body.appendChild(ball);
+  const xdelta = -5 + rand(0, 10);
+  const ydelta = -5 + rand(0, 10);
+  while (true) {
+    x += xdelta;
+    y += ydelta;
     ball.style.left = x + "px";
     ball.style.top = y + "px";
-    document.body.appendChild(ball);
-    const xdelta = -5 + rand(0, 10);
-    const ydelta = -5 + rand(0, 10);
-    while (true)
-    {
-        x += xdelta;
-        y += ydelta;
-        ball.style.left = x + "px";
-        ball.style.top = y + "px";
-        yield* sleep(50);
-    }
+    await sleep(50);
+  }
 }
 
 function rand(min, max) {
-    return Math.random() * (max - min) + min;
+  return Math.random() * (max - min) + min;
 }
+
+
 </script>
 <style>.ball { position: absolute; width: 50px; height: 50px; background-color: red; border-radius: 50px; }</style>
 </head>
