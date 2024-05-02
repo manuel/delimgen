@@ -2,8 +2,8 @@
 
 ## Overview
 
-This library implements delimited control operators as a very thin (50
-LOC) layer over plain ES6 generators.
+This library implements delimited control operators as a very thin
+(link:./index.mjs[50 LOC]) layer over plain ES6 generators.
 
 It doesn't add any expressive power over plain generators, but I think
 it offers a more intuitive API.  Specifically, tasks like waiting for
